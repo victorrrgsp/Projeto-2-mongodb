@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,5 +34,12 @@ public class UserResource {
         return ResponseEntity.ok().body(listDTO);
     }
 
-
+    @GetMapping(value = "/{id}")
+    /* o ResponseEntity ele vai encapsular toda uma estrutura necessaria 
+     *para retornar respostas http com possiveis erros, cabeçalhos, entre outro
+    */ 
+    public ResponseEntity <UserDTO> findById(@PathVariable String id){
+        User obj = userService.findById(id);
+        return ResponseEntity.ok().body(new UserDTO(obj));
+    }
 }
