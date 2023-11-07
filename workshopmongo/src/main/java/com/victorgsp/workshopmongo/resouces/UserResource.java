@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,5 +68,15 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         // o created retorna o codigo 201, que é um codigo Http quando você cria um novo recurso
         return ResponseEntity.created(uri).build();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    /* o ResponseEntity ele vai encapsular toda uma estrutura necessaria 
+     *para retornar respostas http com possiveis erros, cabeçalhos, entre outro
+    */ 
+    public ResponseEntity<Void> delete(@PathVariable String id){
+        userService.delete(id);
+        // quando voce faz uma operação e ela não retorna nada, vai ser uma resposta de codigo 204 que é o noContent do ResponseEntity
+        return ResponseEntity.noContent().build();
     }
 }

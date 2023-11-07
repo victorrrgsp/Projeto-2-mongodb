@@ -42,6 +42,12 @@ public class UserService {
         return userRepository.insert(obj);
     }
 
+    public void delete (String id){
+        // vai buscar o id, se mão existir esse id buscado, irá retornar uma exceção
+        findById(id);
+        userRepository.deleteById(id);
+    }
+
     public User fromDTO(UserDTO objDto){
         return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
