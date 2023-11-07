@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.victorgsp.workshopmongo.domain.User;
+import com.victorgsp.workshopmongo.dto.UserDTO;
 import com.victorgsp.workshopmongo.repository.UserRepository;
 import com.victorgsp.workshopmongo.services.exceptions.ObjectNotFoundExcetion;
 
@@ -25,19 +26,23 @@ public class UserService {
     public User findById(String id){
         // o metodo findOne para o useraio para vc
         Optional<User> user = userRepository.findById(id);
+        // o orElseThrow é um metodo do Optional, onde ele tenta retornar o que estar dentro do Optional, caso não tenha nada, ele retornará uma exceção
         return user.orElseThrow(() -> new ObjectNotFoundExcetion(id + " Objeto não encontrado!"));
     }
 
-    // public User findByNamUser(String nome) {
-
-    //      Optional<User> user = userRepository.findById(id);
-    //     if (user == null) {
+    // public User findByNamUser(String obj) {
+    //     User user = userRepository.(obj);
+    //         if (user == null) {
     //         throw new ObjectNotFoundExcetion("Objeto não encontrado");
-    //     }
-    //     return user;
+    //      }
+    //      return user;
     // }
 
+    public User insert(User obj){
+        return userRepository.insert(obj);
+    }
 
-
-
+    public User fromDTO(UserDTO objDto){
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
+    }
 }
