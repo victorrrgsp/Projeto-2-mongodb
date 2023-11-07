@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,7 +60,7 @@ public class UserResource {
 
     @PostMapping 
     // pro endpoint aceitar o obj ded UserDTO, necessita da anotetion @RequestBody
-    public ResponseEntity <Void> insert(@RequestBody UserDTO objDto ){
+    public ResponseEntity <Void> insert(@RequestBody UserDTO objDto){
         User obj = userService.fromDTO(objDto);
         obj = userService.insert(obj);
         /* criação de um novo cabeçalho com a URl do novo recurso criado, isso é uma boa pratica 
@@ -77,6 +78,17 @@ public class UserResource {
     public ResponseEntity<Void> delete(@PathVariable String id){
         userService.delete(id);
         // quando voce faz uma operação e ela não retorna nada, vai ser uma resposta de codigo 204 que é o noContent do ResponseEntity
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    /* o ResponseEntity ele vai encapsular toda uma estrutura necessaria 
+     *para retornar respostas http com possiveis erros, cabeçalhos, entre outro
+    */ 
+    public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id){
+        User obj = userService.fromDTO(objDto);
+        obj.setId(id);
+        obj = userService.update(obj);
         return ResponseEntity.noContent().build();
     }
 }
