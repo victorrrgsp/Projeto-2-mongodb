@@ -1,5 +1,6 @@
 package com.victorgsp.workshopmongo.resouces;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,23 @@ public class PostResource {
         // isso decodifica o text para o usuário
         text = URL.decodeParam(text);
         List<Post> list = postService.findByTitle(text);
+        return ResponseEntity.ok().body(list);
+    }
+
+     @GetMapping(value = "/fullsearch")
+    /* o ResponseEntity ele vai encapsular toda uma estrutura necessaria 
+     *para retornar respostas http com possiveis erros, cabeçalhos, entre outro
+    */ 
+    public ResponseEntity <List<Post>> fullsearch(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate){
+        // isso decodifica o text para o usuário
+        text = URL.decodeParam(text);
+        // se der algum problema na converção do minDate, o program irá pegar a data minima do sistema que é 01/jan/1970
+        Date min = URL.convertDate(minDate, new Date(0L));
+        Date max = URL.convertDate(maxDate, new Date());
+        List<Post> list = postService.fullSearch(text, min, max);
         return ResponseEntity.ok().body(list);
     }
 }
