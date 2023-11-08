@@ -8,4 +8,6 @@ import com.victorgsp.workshopmongo.domain.User;
 @Repository
 public interface UserRepository extends MongoRepository<User, String>{
 
+    User findByNameIgnoreCase(String name);
+
 }

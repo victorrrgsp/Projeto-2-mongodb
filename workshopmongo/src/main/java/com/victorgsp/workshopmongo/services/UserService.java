@@ -30,13 +30,13 @@ public class UserService {
         return user.orElseThrow(() -> new ObjectNotFoundExcetion(id + " Objeto não encontrado!"));
     }
 
-    // public User findByNamUser(String obj) {
-    //     User user = userRepository.(obj);
-    //         if (user == null) {
-    //         throw new ObjectNotFoundExcetion("Objeto não encontrado");
-    //      }
-    //      return user;
-    // }
+    public User findByNamUser(String name) {
+        User user = userRepository.findByNameIgnoreCase(name);
+            if (user == null) {
+                throw new ObjectNotFoundExcetion("Objeto não encontrado");
+            }
+        return user;
+    }
 
     public User insert(User obj){
         return userRepository.insert(obj);

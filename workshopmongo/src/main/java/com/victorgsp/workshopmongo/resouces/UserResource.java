@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.victorgsp.workshopmongo.domain.Post;
 import com.victorgsp.workshopmongo.domain.User;
 import com.victorgsp.workshopmongo.dto.UserDTO;
+import com.victorgsp.workshopmongo.resouces.util.URL;
 import com.victorgsp.workshopmongo.services.UserService;
 
 @RestController
@@ -50,14 +52,15 @@ public class UserResource {
         return ResponseEntity.ok().body(new UserDTO(obj));
     }
 
-    // @GetMapping(value = "/{name}")
-    // /* o ResponseEntity ele vai encapsular toda uma estrutura necessaria 
-    //  *para retornar respostas http com possiveis erros, cabeçalhos, entre outro
-    // */ 
-    // public ResponseEntity <UserDTO> findByNamUser(@PathVariable String name){
-    //     User obj = userService.findByNamUser(name);
-    //     return ResponseEntity.ok().body(new UserDTO(obj));
-    // }
+    @GetMapping(value = "/name")
+    /* o ResponseEntity ele vai encapsular toda uma estrutura necessaria 
+     *para retornar respostas http com possiveis erros, cabeçalhos, entre outro
+    */ 
+    public ResponseEntity <UserDTO> findByNamUser(@RequestParam(value = "text", defaultValue = "") String name){
+        name = URL.decodeParam(name);
+        User obj = userService.findByNamUser(name);
+        return ResponseEntity.ok().body(new UserDTO(obj));
+    }
 
     @PostMapping 
     // pro endpoint aceitar o obj ded UserDTO, necessita da anotetion @RequestBody
